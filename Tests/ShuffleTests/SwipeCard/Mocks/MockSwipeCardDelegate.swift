@@ -49,6 +49,15 @@ class MockSwipeCardDelegate: SwipeCardDelegate {
     didSwipeCalled = true
     didSwipeDirection = direction
   }
+    
+    var canSwipeCalled: Bool = false
+    var canSwipeDirection: SwipeDirection?
+    var returnCanSwipe = true
+    func card(canSwipe card: SwipeCard, with direction: SwipeDirection) -> Bool {
+        canSwipeCalled = true
+        canSwipeDirection = direction
+        return returnCanSwipe
+    }
 
   var didTapCalled: Bool = false
   func card(didTap card: SwipeCard) {

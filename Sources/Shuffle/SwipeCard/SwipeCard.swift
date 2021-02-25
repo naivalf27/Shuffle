@@ -58,7 +58,7 @@ open class SwipeCard: SwipeView {
     }
   }
 
-  weak var delegate: SwipeCardDelegate?
+  open weak var delegate: SwipeCardDelegate?
 
   var touchLocation: CGPoint? {
     return internalTouchLocation
@@ -164,8 +164,13 @@ open class SwipeCard: SwipeView {
   override open func didSwipe(_ recognizer: UIPanGestureRecognizer,
                               with direction: SwipeDirection) {
     super.didSwipe(recognizer, with: direction)
-    delegate?.card(didSwipe: self, with: direction)
-    swipeAction(direction: direction, forced: false)
+    
+    if delegate?.card(canSwipe: self, with: direction) ?? true {
+        delegate?.card(didSwipe: self, with: direction)
+        swipeAction(direction: direction, forced: false)
+    } else {
+        animator.animateReset(on: self)
+    }
   }
 
   override open func didCancelSwipe(_ recognizer: UIPanGestureRecognizer) {

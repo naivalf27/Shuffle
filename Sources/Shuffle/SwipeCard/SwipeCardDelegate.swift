@@ -24,10 +24,11 @@
 
 import Foundation
 
-protocol SwipeCardDelegate: AnyObject {
+public protocol SwipeCardDelegate: AnyObject {
   func card(didBeginSwipe card: SwipeCard)
   func card(didCancelSwipe card: SwipeCard)
   func card(didContinueSwipe card: SwipeCard)
+  func card(canSwipe card: SwipeCard, with direction: SwipeDirection) -> Bool
   func card(didSwipe card: SwipeCard, with direction: SwipeDirection)
   func card(didTap card: SwipeCard)
 }

@@ -444,16 +444,16 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
 
   // MARK: - SwipeCardDelegate
 
-  func card(didTap card: SwipeCard) {
+  public func card(didTap card: SwipeCard) {
     guard let topCardIndex = topCardIndex else { return }
     delegate?.cardStack?(self, didSelectCardAt: topCardIndex)
   }
 
-  func card(didBeginSwipe card: SwipeCard) {
+  public func card(didBeginSwipe card: SwipeCard) {
     animator.removeBackgroundCardAnimations(self)
   }
 
-  func card(didContinueSwipe card: SwipeCard) {
+  public func card(didContinueSwipe card: SwipeCard) {
     for (position, backgroundCard) in backgroundCards.enumerated() {
       backgroundCard.transform = transformProvider.backgroundCardDragTransform(for: self,
                                                                                topCard: card,
@@ -461,11 +461,16 @@ open class SwipeCardStack: UIView, SwipeCardDelegate, UIGestureRecognizerDelegat
     }
   }
 
-  func card(didCancelSwipe card: SwipeCard) {
+  public func card(didCancelSwipe card: SwipeCard) {
     animator.animateReset(self, topCard: card)
   }
+    
+    public func card(canSwipe card: SwipeCard, with direction: SwipeDirection) -> Bool {
+        guard let topCardIndex = topCardIndex else { return false }
+        return self.delegate?.cardStack?(self, canSwipeCardAt: topCardIndex, with: direction) ?? true
+    }
 
-  func card(didSwipe card: SwipeCard,
+  public func card(didSwipe card: SwipeCard,
             with direction: SwipeDirection) {
     swipeAction(topCard: card, direction: direction, forced: false, animated: true)
   }
